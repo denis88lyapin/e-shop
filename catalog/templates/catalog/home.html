@@ -36,36 +36,18 @@
 
     <!-- Карточки товаров -->
     <div class="row">
+      {% for product in products %}
       <div class="col-md-4 mb-3">
         <div class="card">
-          <img src="#" class="card-img-top" alt="Товар 1">
+          <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
           <div class="card-body">
-            <h5 class="card-title">Товар 1</h5>
-            <p class="card-text">Описание товара 1. Цена: $20.</p>
+            <h5 class="card-title">{{ product.name }}</h5>
+            <p class="card-text">Цена: {{ product.price }} р.</p>
             <a href="#" class="btn btn-primary">Купить</a>
           </div>
         </div>
       </div>
-      <div class="col-md-4 mb-3">
-        <div class="card">
-          <img src="#" class="card-img-top" alt="Товар 2">
-          <div class="card-body">
-            <h5 class="card-title">Товар 2</h5>
-            <p class="card-text">Описание товара 2. Цена: $30.</p>
-            <a href="#" class="btn btn-primary">Купить</a>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 mb-3">
-        <div class="card">
-          <img src="#" class="card-img-top" alt="Товар 3">
-          <div class="card-body">
-            <h5 class="card-title">Товар 3</h5>
-            <p class="card-text">Описание товара 3. Цена: $25.</p>
-            <a href="#" class="btn btn-primary">Купить</a>
-          </div>
-        </div>
-      </div>
+      {% endfor %}
     </div>
   </div>
 

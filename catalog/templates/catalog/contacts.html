@@ -37,11 +37,13 @@
     <!-- Контактные данные магазина -->
     <div class="row">
       <div class="col-md-6">
+        {% if contact_display %}
         <h5>Контактная информация:</h5>
-        <p><strong>Телефон:</strong> +1 (123) 456-7890</p>
-        <p><strong>Email:</strong> info@example.com</p>
-        <p><strong>Адрес:</strong> 123 Main Street, City, Country</p>
-        <p><strong>График работы:</strong> Пн-Пт: 9:00 - 18:00</p>
+        <p><strong>Телефон:</strong> {{ contact_display.phone }}</p>
+        <p><strong>Email:</strong> {{ contact_display.email }}</p>
+        <p><strong>Адрес:</strong> {{ contact_display.address }}</p>
+        <p><strong>График работы:</strong> {{ contact_display.schedule }}</p>
+        {% endif %}
       </div>
     </div>
 
