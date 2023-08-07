@@ -1,76 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Контакты - Электронный магазин</title>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-</head>
-<body>
+{% extends 'catalog/base.html' %}
+{% block content %}
 
-  <!-- Навигационная панель -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="/">E-shop</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ml-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="/">Главная</a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="#">Категории</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Контакты</a>
-        </li>
-      </ul>
+    <!-- Заголовок и форма обратной связи -->
+    <div class="container mt-5">
+        <h1>Свяжитесь с нами</h1>
+        <p>Если у вас есть вопросы или предложения, заполните форму ниже, чтобы связаться с нами.</p>
+
+        <!-- Контактные данные магазина -->
+        <div class="row">
+            <div class="col-md-6">
+                {% if contact_display %}
+                    <h5>Контактная информация:</h5>
+                    <p><strong>Телефон:</strong> {{ contact_display.phone }}</p>
+                    <p><strong>Email:</strong> {{ contact_display.email }}</p>
+                    <p><strong>Адрес:</strong> {{ contact_display.address }}</p>
+                    <p><strong>График работы:</strong> {{ contact_display.schedule }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Форма обратной связи -->
+        <div class="row mt-4">
+            <div class="col-md-6">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name">Имя</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Сообщение</label>
+                        <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                </form>
+            </div>
+        </div>
     </div>
-  </nav>
-
-  <!-- Заголовок и форма обратной связи -->
-  <div class="container mt-5">
-    <h1>Свяжитесь с нами</h1>
-    <p>Если у вас есть вопросы или предложения, заполните форму ниже, чтобы связаться с нами.</p>
-
-    <!-- Контактные данные магазина -->
-    <div class="row">
-      <div class="col-md-6">
-        {% if contact_display %}
-        <h5>Контактная информация:</h5>
-        <p><strong>Телефон:</strong> {{ contact_display.phone }}</p>
-        <p><strong>Email:</strong> {{ contact_display.email }}</p>
-        <p><strong>Адрес:</strong> {{ contact_display.address }}</p>
-        <p><strong>График работы:</strong> {{ contact_display.schedule }}</p>
-        {% endif %}
-      </div>
-    </div>
-
-    <!-- Форма обратной связи -->
-    <div class="row mt-4">
-      <div class="col-md-6">
-        <form method="post">
-          {% csrf_token %}
-          <div class="form-group">
-            <label for="name">Имя</label>
-            <input type="text" class="form-control" id="name" name="name" required>
-          </div>
-          <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" class="form-control" id="email" name="email" required>
-          </div>
-          <div class="form-group">
-            <label for="message">Сообщение</label>
-            <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Отправить</button>
-        </form>
-      </div>
-    </div>
-  </div>
-
-  <!-- Подключение Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
-</body>
-</html>
+{% endblock %}

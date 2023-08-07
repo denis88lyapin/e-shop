@@ -1,0 +1,18 @@
+{% extends 'catalog/base.html' %}
+{% load media_tags %}
+{% load media_filters %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-4 mb-3">
+            <div class="card">
+                <img src="{% mediapath product.image %}" class="card-img-top" alt="{{ product.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">Цена: {{ product.price }} р.</p>
+                    <p class="card-text">Описание: {{ product.description }}.</p>
+                    <a href="#" class="btn btn-primary">Купить</a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
