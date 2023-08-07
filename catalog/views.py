@@ -55,5 +55,8 @@ def create_product(request):
             return redirect('catalog:home')
     else:
         form = ProductForm()
-    context = {'form': form}
+    context = {
+        'form': form,
+        'title': 'Добавить товар',
+    }
     return render(request, 'catalog/create_product.html', context)
