@@ -1,16 +1,20 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.core.paginator import Paginator
-from catalog.forms import ProductForm
+from django.shortcuts import render
+from django.urls import reverse_lazy
 from catalog.models import Product, Contacts
+from django.views.generic import ListView, DetailView, TemplateView, CreateView
 
 
-def home(request):
-    context = {
-        'products': Product.objects.order_by('created_at')[:5],
-        'title': 'E-sop - Главная'
+class HomeView(TemplateView):
+    template_name = 'catalog/home.html'
+    model = Product
+    extra_context = {
+        'title': 'E-shop - Главная',
     }
 
-    return render(request, 'catalog/home.html', context)
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['object_list'] = Product.objects.order_by('-created_at')[:5]
+        return context_data
 
 
 def contacts(request):
@@ -26,37 +30,28 @@ def contacts(request):
     return render(request, 'catalog/contacts.html', context)
 
 
-def products(request):
-    products = Product.objects.order_by('created_at')
-    paginator = Paginator(products, 1)
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    context = {
-        'page_obj': page_obj,
+class ProductsListView(ListView):
+    model = Product
+    template_name = 'catalog/products.html'
+    paginate_by = 1
+    extra_context = {
         'title': 'Наши товары',
     }
 
-    return render(request, 'catalog/products.html', context)
 
-
-def product(request, pk):
-    product = get_object_or_404(Product, pk=pk)
-    context = {
-        'product': product
+class ProductDetailViev(DetailView):
+    model = Product
+    template_name = 'catalog/product.html'
+    extra_context = {
+        'title': 'Товар'
     }
-    return render(request, 'catalog/product.html', context)
 
 
-def create_product(request):
-    if request.method == 'POST':
-        form = ProductForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('catalog:home')
-    else:
-        form = ProductForm()
-    context = {
-        'form': form,
+class CreateProductView(CreateView):
+    model = Product
+    fields = ['name', 'description', 'image', 'category', 'price']
+    template_name = 'catalog/create_product.html'
+    success_url = reverse_lazy('catalog:home')
+    extra_context = {
         'title': 'Добавить товар',
     }
-    return render(request, 'catalog/create_product.html', context)

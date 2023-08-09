@@ -4,7 +4,7 @@
 
 {% block content %}
     <div class="product-list">
-        {% for product in page_obj %}
+        {% for product in object_list %}
             <div class="product-card">
                 <h2>{{ product.name }}</h2>
                 <p>{{ product.description|slice:":100" }}{% if product.description|length > 100 %}...{% endif %}</p>
