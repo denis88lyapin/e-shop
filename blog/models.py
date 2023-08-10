@@ -8,7 +8,7 @@ NULLABLE = {
 
 class Blog(models.Model):
     title = models.CharField(max_length=150, verbose_name='заголовок')
-    slug = models.CharField(max_length=150, verbose_name='slug')
+    slug = models.CharField(max_length=150, verbose_name='slug', **NULLABLE)
     body = models.TextField(verbose_name='содержимое')
     image = models.ImageField(upload_to='blog/', **NULLABLE, verbose_name='превью')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='дата создания')

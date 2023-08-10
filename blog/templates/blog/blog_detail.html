@@ -1,0 +1,28 @@
+{% extends 'catalog/base.html' %}
+{% load static %}
+{% block content %}
+    <div class="card mb-3">
+        <div class="row g-0">
+            <div class="col-md-4">
+                {% if blog.image %}
+                    <img src="{{ blog.image.url }}" alt="{{ blog.title }}" class="img-fluid">
+                {% else %}
+                    <img src="{% static 'images/placeholder.png' %}" alt="Placeholder" class="img-fluid">
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{ blog.title }}</h5>
+                    <p class="card-text">{{ blog.body }}</p>
+                    <p class="card-text"><small class="text-muted">{{ blog.created_at|date }}</small></p>
+                    <a href="{% url 'blog:index' %}" class="btn btn-primary">Назад</a>
+                    <a href="{% url 'blog:update' blog.slug %}" class="btn btn-primary">Редактировать</a>
+                    <a href="{% url 'blog:delete' blog.slug %}" class="btn btn-danger float-right">Удалить</a>
+                </div>
+            </div>
+            <div class="card-footer">
+                Просмотры: {{ blog.views_count }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
