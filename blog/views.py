@@ -54,7 +54,7 @@ class BlogDetailView(DetailView):
             self.object.views_count += 1
             self.object.save()
 
-            if self.object.views_count == 15:
+            if self.object.views_count == 100:
                 subject = 'Поздравление с достижением 100 просмотров'
                 message = f'Статья "{self.object.title}" достигла 100 просмотров.'
                 from_email = config('EMAIL_HOST_USER')
