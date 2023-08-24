@@ -16,7 +16,9 @@
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-sm btn-outline-secondary">В корзину</button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Подробнее</button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary">
+                                    <a href="{% url 'catalog:detail_product' object.pk %}">Подробнее</a>
+                                </button>
                             </div>
                         </div>
                     </div>
