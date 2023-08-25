@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 
 from catalog.form import ProductForm
-from catalog.models import Product, Contacts
+from catalog.models import Product, Contacts, Version
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
 
 
@@ -40,6 +40,23 @@ class ProductsListView(ListView):
         'title': 'Наши товары',
     }
 
+    def get_queryset(self):
+        return super().get_queryset().order_by('pk')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        for product in context['object_list']:
+            active_version = Version.objects.filter(product=product, version_activ=True).first()
+            if active_version:
+                product.active_version_number = active_version.version_num
+                product.active_version_name = active_version.version_name
+            else:
+                product.active_version_number = None
+                product.active_version_name = None
+
+        return context
+
 
 class ProductDetailViev(DetailView):
     model = Product
@@ -47,6 +64,19 @@ class ProductDetailViev(DetailView):
     extra_context = {
         'title': 'Товар'
     }
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        active_version = Version.objects.filter(product=self.object, version_activ=True).first()
+        if active_version:
+            context['active_version_number'] = active_version.version_num
+            context['active_version_name'] = active_version.version_name
+        else:
+            context['active_version_number'] = None
+            context['active_version_name'] = None
+
+        return context
 
 
 class CreateProductView(CreateView):
@@ -73,4 +103,3 @@ class UpdateProductView(UpdateView):
 class DeleteProductView(DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:home')
-
