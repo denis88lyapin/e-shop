@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     'catalog.apps.CatalogConfig',
     'blog.apps.BlogConfig',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -142,3 +143,7 @@ EMAIL_PORT = 465
 EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_SSL = True
+
+AUTH_USER_MODEL = 'users.User'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'

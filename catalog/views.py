@@ -1,6 +1,9 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
+from django.utils.decorators import method_decorator
 
+from catalog.decorators import custom_login_required
 from catalog.form import ProductForm, VersionForm
 from catalog.models import Product, Contacts, Version
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
@@ -78,7 +81,7 @@ class ProductDetailViev(DetailView):
 
         return context
 
-
+@method_decorator(custom_login_required, name='dispatch')
 class CreateProductView(CreateView):
     model = Product
     form_class = ProductForm
@@ -87,7 +90,13 @@ class CreateProductView(CreateView):
         'title': 'Добавить товар',
     }
 
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.owner = self.request.user
+        self.object.save()
+        return super().form_valid(form)
 
+@method_decorator(custom_login_required, name='dispatch')
 class UpdateProductView(UpdateView):
     model = Product
     form_class = ProductForm
@@ -117,15 +126,17 @@ class UpdateProductView(UpdateView):
 
     def form_valid(self, form, version_form):
         self.object = form.save()
+        self.object.owner = self.request.user
         version = version_form.save(commit=False)
         version.product = self.object
         version.save()
+        self.object.save()
         return redirect(self.get_success_url())
 
     def form_invalid(self, form, version_form):
         return self.render_to_response(self.get_context_data(form=form, version_form=version_form))
 
-
+@method_decorator(custom_login_required, name='dispatch')
 class DeleteProductView(DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:home')
