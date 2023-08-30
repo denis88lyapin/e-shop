@@ -22,6 +22,15 @@ class Category(models.Model):
 
 
 class Product(models.Model):
+    STATUS_CREATED = 'created'
+    STATUS_MODERATED = 'moderated'
+    STATUS_PUBLISH = 'published'
+    STATUSES = (
+        (STATUS_CREATED, 'Добавлен'),
+        (STATUS_MODERATED, 'На модерации'),
+        (STATUS_PUBLISH, 'Опубликован'),
+    )
+
     name = models.CharField(max_length=100, verbose_name='Наименование')
     description = models.TextField(**NULLABLE, verbose_name='Описание')
     image = models.ImageField(upload_to='catalog/', **NULLABLE)
@@ -29,8 +38,8 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name='Стоимость')
     created_at = models.DateTimeField(**NULLABLE, auto_now_add=True, verbose_name='Дата создания')
     mod_at = models.DateTimeField(**NULLABLE, auto_now=True, verbose_name='Дата изменения')
-
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, verbose_name='продавец', **NULLABLE)
+    status = models.CharField(max_length=20, choices=STATUSES, default=STATUS_MODERATED, verbose_name='статус')
 
     def __str__(self):
         return f'{self.name} ({self.price})'
@@ -38,6 +47,11 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'продукт'
         verbose_name_plural = 'продукты'
+        permissions = [
+            ('set_product_status', 'Can change the status of products'),
+            ('change_product_description', 'Can change product description'),
+            ('change_product_category', 'Can change product category'),
+        ]
 
 
 class Contacts(models.Model):

@@ -1,4 +1,7 @@
 import random
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView as BaseLoginView
 from django.contrib.auth.views import LogoutView as BaseLogoutView
 from django.core.mail import send_mail
@@ -59,7 +62,7 @@ class ConfirmRegistrationView(View):
         return redirect('users:register')
 
 
-class ProfileView(UpdateView):
+class ProfileView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserProfileForm
     success_url = reverse_lazy('users:profile')
@@ -67,7 +70,7 @@ class ProfileView(UpdateView):
     def get_object(self, queryset=None):
         return self.request.user
 
-
+@login_required
 def generate_new_password(request):
     new_password = ''.join([str(random.randint(0, 9)) for _ in range(12)])
     to = request.user.email
@@ -84,7 +87,7 @@ def generate_new_password(request):
     request.user.save()
     return redirect(reverse('catalog:home'))
 
-
+@login_required
 def reset_password(request):
     """Сгенерировать новый пароль для пользователя если пароль забыли"""
     if request.method == 'POST':

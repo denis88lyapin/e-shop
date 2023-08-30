@@ -25,12 +25,16 @@
                     <button type="button" class="btn btn-sm btn-outline-secondary">
                         <a href="#">Купить</a>
                     </button>
+                    {% if perms.catalog.change_product or object.owner == user %}
                     <button type="button" class="btn btn-sm btn-outline-secondary">
                         <a href="{% url 'catalog:update_product' object.pk %}">Изменить продукт</a>
                     </button>
+                    {% endif %}
+                    {% if perms.catalog.delete_product %}
                     <button type="button" class="btn btn-sm btn-outline-secondary">
                         <a href="{% url 'catalog:delete_product' object.pk %}">Удалить продукт</a>
                     </button>
+                    {% endif %}
                 </div>
             </div>
         </div>

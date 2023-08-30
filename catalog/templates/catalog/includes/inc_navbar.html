@@ -13,7 +13,9 @@
                     <li><a href="#" class="text-white">Категории</a></li>
                     <li><a href="{% url 'catalog:products' %}" class="text-white">Наши товары</a></li>
                     <li><a href="{% url 'catalog:contacts' %}" class="text-white">Контакты</a></li>
+                    {% if perms.catalog.change_product %}
                     <li><a href="{% url 'catalog:create_product' %}" class="text-white">Добавить товар</a></li>
+                    {% endif %}
                     {% if user.is_authenticated %}
                     <li><a href="{% url 'users:logout' %}" class="text-white">Выход</a></li>
                     <li><a href="{% url 'users:profile' %}" class="text-white">Профиль</a></li>

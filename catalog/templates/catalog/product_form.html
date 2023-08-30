@@ -2,10 +2,19 @@
 
 {% block content %}
 
-    <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
+
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    {{ formset.management_form }}
+    {% for form in formset.forms %}
         {{ form.as_p }}
-        {{ version_form.as_p }}
-        <button type="submit">Сохранить</button>
-    </form>
+        {% if not forloop.last %}
+            <hr>
+        {% endif %}
+    {% endfor %}
+    <button type="submit">Сохранить</button>
+</form>
+
 {% endblock %}
