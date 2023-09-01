@@ -4,15 +4,15 @@
     <div class="col-6">
         <div class="card">
             <div class="card-header">
-                Удаление продукта
+                Удаление категории
             </div>
             <div class="card-body">
                 {% csrf_token %}
-                <p> Действительно хотите удалить продукт {{ object.name }}</p>
+                <p> Действительно хотите удалить категорию {{ object.name }}</p>
                 <button type="submit" class="btn-outline-danger">
                     Удалить
                 </button>
-                <a class="btn-outline-warning" href="{% url 'catalog:category_list' %}">Отмена</a>
+                <a class="btn-outline-warning" href="{% url 'catalog:detail_product' object.pk %}">Отмена</a>
             </div>
         </div>
     </div>

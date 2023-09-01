@@ -1,5 +1,5 @@
 from django import forms
-from catalog.models import Product, Version
+from catalog.models import Product, Version, Category
 
 
 class VisualMixin:
@@ -23,6 +23,13 @@ class ProhibitedWordsMixin:
                 raise forms.ValidationError('Описание содержит запрещенное слово!')
 
         return cleaned_data
+
+
+class CategoryForm(VisualMixin, forms.ModelForm):
+
+    class Meta:
+        model = Category
+        fields = '__all__'
 
 class ProductForm(VisualMixin, ProhibitedWordsMixin, forms.ModelForm):
     class Meta:

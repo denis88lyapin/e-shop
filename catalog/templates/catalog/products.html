@@ -3,37 +3,38 @@
 {% load media_filters %}
 
 {% block content %}
+<div class="row">
     <div class="product-list">
         {% for object in object_list %}
-            <div class="col-md-4">
-                <div class="card mb-4 box-shadow">
-                    <img src="{{ object.image|mediapath }}" class="card-img-top"
-                         data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail"
-                         alt="Card image cap">
-                    <div class="card-body">
-                        <p class="card-text">{{ object.name }}.</p>
-                        <p class="card-text">Цена: {{ object.price }} р.</p>
-                        <p class="card-text">Описание: {{ object.description|slice:':100' }}.</p>
-                        {% if object.active_version_number %}
-                            <p class="card-text">Активная версия: {{ object.active_version_number }}</p>
-                            <p class="card-text">Информация о версии: {{ object.active_version_name }}</p>
-                        {% else %}
-                            <p class="card-text">Нет активной версии</p>
-                            <p class="card-text">Нет информации о версии</p>
-                        {% endif %}
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">
-                                    <a href="#">Купить</a>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-secondary">
-                                    <a href="{% url 'catalog:detail_product' object.pk %}">Подробнее</a>
-                                </button>
-                            </div>
+        <div class="col-md-4">
+            <div class="card mb-4 box-shadow">
+                <img src="{{ object.image|mediapath }}" class="card-img-top"
+                     data-src="holder.js/100px225?theme=thumb&bg=55595c&fg=eceeef&text=Thumbnail"
+                     alt="Card image cap">
+                <div class="card-body">
+                    <p class="card-text">{{ object.name }}.</p>
+                    <p class="card-text">Цена: {{ object.price }} р.</p>
+                    <p class="card-text">Описание: {{ object.description|slice:':100' }}.</p>
+                    {% if object.active_version_number %}
+                    <p class="card-text">Активная версия: {{ object.active_version_number }}</p>
+                    <p class="card-text">Информация о версии: {{ object.active_version_name }}</p>
+                    {% else %}
+                    <p class="card-text">Нет активной версии</p>
+                    <p class="card-text">Нет информации о версии</p>
+                    {% endif %}
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-outline-secondary">
+                                <a href="#">Купить</a>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-secondary">
+                                <a href="{% url 'catalog:detail_product' object.pk %}">Подробнее</a>
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
         {% endfor %}
     </div>
 
@@ -54,4 +55,5 @@
             {% endif %}
         </span>
     </div>
+</div>
 {% endblock %}

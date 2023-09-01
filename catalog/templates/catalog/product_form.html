@@ -7,13 +7,17 @@
 <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
-    {{ formset.management_form }}
-    {% for form in formset.forms %}
-        {{ form.as_p }}
-        {% if not forloop.last %}
-            <hr>
-        {% endif %}
-    {% endfor %}
+    {% if version_form %}
+        {{ version_form.as_p }}
+    {% else %}
+        {{ formset.management_form }}
+        {% for form in formset.forms %}
+            {{ form.as_p }}
+            {% if not forloop.last %}
+                <hr>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
     <button type="submit">Сохранить</button>
 </form>
 

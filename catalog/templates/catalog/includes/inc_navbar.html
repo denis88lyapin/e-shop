@@ -10,7 +10,7 @@
                 <h4 class="text-white">Меню</h4>
                 <ul class="list-unstyled">
                     <li><a href="{% url 'catalog:home' %}" class="text-white">Главная</a></li>
-                    <li><a href="#" class="text-white">Категории</a></li>
+                    <li><a href="{% url 'catalog:category_list' %}" class="text-white">Категории</a></li>
                     <li><a href="{% url 'catalog:products' %}" class="text-white">Наши товары</a></li>
                     <li><a href="{% url 'catalog:contacts' %}" class="text-white">Контакты</a></li>
                     {% if perms.catalog.change_product %}

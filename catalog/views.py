@@ -5,9 +5,11 @@ from django.http import Http404
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 
-from catalog.form import ProductForm, VersionForm, ProductCuttedForm
-from catalog.models import Product, Contacts, Version
+from catalog.form import ProductForm, VersionForm, ProductCuttedForm, CategoryForm
+from catalog.models import Product, Contacts, Version, Category
 from django.views.generic import ListView, DetailView, TemplateView, CreateView, UpdateView, DeleteView
+
+from catalog.services import get_categories_cache, get_product_list
 
 
 class HomeView(ListView):
@@ -45,21 +47,24 @@ def contacts(request):
 class ProductsListView(ListView):
     model = Product
     template_name = 'catalog/products.html'
-    paginate_by = 2
+    paginate_by = 10
     extra_context = {
         'title': 'Наши товары',
     }
 
     def get_queryset(self):
-
-        user = self.request.user
-        if user.is_staff:
-            queryset = super().get_queryset().order_by('pk')
-        else:
-            queryset = super().get_queryset().filter(
-                status=Product.STATUS_PUBLISH
-            )
+        queryset = get_product_list(request=self.request)
         return queryset
+
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     if user.is_staff:
+    #         queryset = super().get_queryset()
+    #     else:
+    #         queryset = super().get_queryset().filter(
+    #             status=Product.STATUS_PUBLISH
+    #         )
+    #     return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -196,6 +201,51 @@ class DeleteProductView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView)
     model = Product
     permission_required = 'catalog.delete_product'
     success_url = reverse_lazy('catalog:home')
+
+ # CategoryCreateView, CategoryUpdateView, CategoryDeleteView
+
+
+class CategoryListView(LoginRequiredMixin, ListView):
+    model = Category
+    extra_context = {
+        'title': 'Категории',
+    }
+
+    def get_queryset(self):
+        queryset = get_categories_cache()
+        return queryset
+    # def get_context_data(self, *args, **kwargs):
+    #     context_data = super().get_context_data(*args, **kwargs)
+    #     context_data['object_list'] =
+
+
+class CategoryCreateView(CreateView):
+    model = Category
+    form_class = CategoryForm
+    success_url = reverse_lazy('catalog:category_list')
+    extra_context = {
+        'title': 'Добавить категорию',
+    }
+
+
+class CategoryUpdateView(UpdateView):
+    model = Category
+    form_class = CategoryForm
+    success_url = reverse_lazy('catalog:category_list')
+    extra_context = {
+        'title': 'Изменить категорию',
+    }
+
+
+class CategoryDeleteView(DeleteView):
+    model = Category
+    success_url = reverse_lazy("catalog:category_list")
+
+
+
+
+
+
 
 
 
