@@ -168,11 +168,14 @@ class UpdateProductView(LoginRequiredMixin, PermissionRequiredMixin, UserPassesT
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
-        VersionFormSet = inlineformset_factory(Product, Version, form=VersionForm, extra=1)
-        if self.request.method == 'POST':
-            context_data['formset'] = VersionFormSet(self.request.POST, instance=self.object)
-        else:
-            context_data['formset'] = VersionFormSet(instance=self.object)
+        user = self.request.user
+
+        if user == self.object.owner:
+            VersionFormSet = inlineformset_factory(Product, Version, form=VersionForm, extra=1)
+            if self.request.method == 'POST':
+                context_data['formset'] = VersionFormSet(self.request.POST, instance=self.object)
+            else:
+                context_data['formset'] = VersionFormSet(instance=self.object)
         return context_data
 
     def form_valid(self, form):
