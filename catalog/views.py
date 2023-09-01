@@ -135,15 +135,27 @@ class UpdateProductView(LoginRequiredMixin, PermissionRequiredMixin, UserPassesT
     }
 
     def test_func(self):
+        user = self.request.user
+        product = self.get_object()
+
+        if product.owner == user or user.is_staff:
+            return True
+        return False
+
+    def get_form_class(self):
         product = self.get_object()
         user = self.request.user
 
         if user.is_staff:
-            self.form_class = ProductCuttedForm
-        if product.owner == user:
-            self.form_class = ProductForm
+            return ProductCuttedForm
+        elif product.owner == user:
+            return ProductForm
 
-        return self.form_class
+        return super().get_form_class()
+
+    def handle_no_permission(self):
+        return redirect(reverse_lazy('catalog:home'))
+
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
