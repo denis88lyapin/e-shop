@@ -179,15 +179,17 @@ class UpdateProductView(LoginRequiredMixin, PermissionRequiredMixin, UserPassesT
         return context_data
 
     def form_valid(self, form):
-        formset = self.get_context_data()['formset']
-        self.object = form.save()
-        if formset.is_valid():
-            formset.instance = self.object
-            formset.save()
+        user = self.request.user
+        if user == self.object.owner:
+            formset = self.get_context_data()['formset']
+            self.object = form.save()
+            if formset.is_valid():
+                formset.instance = self.object
+                formset.save()
         return super().form_valid(form)
 
-    def form_invalid(self, form, version_form):
-        return self.render_to_response(self.get_context_data(form=form, version_form=version_form))
+    # def form_invalid(self, form, version_form):
+    #     return self.render_to_response(self.get_context_data(form=form, version_form=version_form))
 
 
 class DeleteProductView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
